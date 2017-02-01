@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>React-Pivoter</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <style>
+    #app {
+      margin: 10px;
+      overflow: scroll;
+    }
+
+    .pivot-table .group {
+      vertical-align: middle;
+    }
+
+    .pivot-table .group.closed:before {
+      content: "▶";
+      margin-right: 5px;
+      font-size: 0.55em;
+    }
+
+    .pivot-table .group.open:before {
+      content: "▼";
+      margin-right: 5px;
+      font-size: 0.65em;
+    }
+
+    .pivot-table > thead > tr > th {
+      vertical-align: middle;
+    }
+
+    .pivot-table > thead > tr > th:not(.group-header) {
+      text-align: center;
+    }
+
+    .pivot-table > tbody > tr > .group-start,
+    .pivot-table > thead > tr > .group-start.leaf,
+    .pivot-table > thead > tr > .parent,
+    .pivot-table > tbody > tr {
+      border-left: 2px solid #ddd;
+    }
+
+    .pivot-table > thead > tr:first-child > th:not(.group-header) {
+      border-top: 2px solid #ddd;
+    }
+
+    .pivot-table {
+      border-right: 2px solid #ddd;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .pivot-table .group + .group-start {
+      border-left: 2px solid #ddd;
+    }
+
+    .pivot-table.pivot-hover > tbody > tr:hover > td:not(.before-group) {
+      background-color: #f0f0f0;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="../dist/example.min.js"></script>
+</body>
+</html>
