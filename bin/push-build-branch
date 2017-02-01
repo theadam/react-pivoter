@@ -1,0 +1,17 @@
+#! /bin/bash
+
+git checkout master
+git pull
+git checkout -B gh-pages
+git reset --hard master
+
+npm install
+npm run build
+sed -i '' -E '/^(lib|dist)$/d' .gitignore
+git add -f dist lib
+git add .gitignore
+
+git commit -m "Adding build files"
+
+git push -f
+
