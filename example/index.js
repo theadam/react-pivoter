@@ -48,12 +48,24 @@ function reducer(data, row) {
   };
 }
 
+function renderCell(text, col, row) {
+  return (
+    <span
+      onDoubleClick={() => console.log(row.points)}
+    >
+      {text}
+    </span>
+  );
+}
+
 render(
   <PivotTable
     reducer={reducer}
-    groups={[allGroups[0], allGroups[1]]}
+    groups={[allGroups[0], allGroups[1], allGroups[3]]}
     dataPoints={dataPoints}
     input={input}
+    renderCell={renderCell}
+    className="table pivot-hover pivot-table"
   />,
   root
 );

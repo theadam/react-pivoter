@@ -22,6 +22,7 @@ export default class PivotBody extends Component {
   getCellClassName(col) {
     return [
       col.groupStart && col.path.length > 0 && 'group-start',
+      'data',
     ].filter(v => !!v).join(' ');
   }
 
@@ -50,7 +51,7 @@ export default class PivotBody extends Component {
     const { groups } = this.props;
     const group = groups[row.level];
 
-    return (group.formatter || (x => x))(last(row.path));
+    return (group.formatter || (x => x))(last(row.path, row));
   }
 
 
@@ -71,14 +72,17 @@ export default class PivotBody extends Component {
               { renderGroup(this.group(row), row) }
             </td>
             { range(0, maxOpen - row.level - 1).map((v, i) =>
-              <td className="after-group" key={i} />
+              <td
+                onClick={this.handleGroupClick(row)}
+                className="after-group" key={i}
+              />
             ) }
             { dataGetter(row.data).map(({ col, data }) =>
               <td
                 key={col.path.join('#')}
                 className={this.getCellClassName(col)}
               >
-                { renderCell(col.format(data), col, row) }
+                { renderCell(col.format(data, col, row), col, row) }
               </td>
             ) }
           </tr>

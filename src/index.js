@@ -28,6 +28,8 @@ export default class PivotTable extends Component {
     renderHeader: PropTypes.func,
     renderCell: PropTypes.func,
     renderGroup: PropTypes.func,
+    renderGroupHeader: PropTypes.func,
+    className: PropTypes.string,
   }
 
   constructor(props) {
@@ -66,17 +68,18 @@ export default class PivotTable extends Component {
 
   render() {
     const { data, config, opens } = this.state;
-    const { renderHeader, renderCell, renderGroup } = this.props;
+    const { renderHeader, renderCell, renderGroup, renderGroupHeader } = this.props;
     const { groups } = config;
     const columns = columnTree(data, config);
     const dataGetter = dataGetterFrom(columns);
     const maxOpen = this.maxOpen();
 
     return (
-      <table className="table pivot-table pivot-hover">
+      <table className={this.props.className}>
         <PivotHeader
           columnTree={columns}
           renderHeader={renderHeader}
+          renderGroupHeader={renderGroupHeader}
           maxOpen={maxOpen}
           groups={groups}
         />
