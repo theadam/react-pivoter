@@ -96,7 +96,7 @@ export default class FilterMenu extends Component {
     return (
       <div className={`filter-menu ${showClass}`}>
         <div className="header">
-          <input value={text} onChange={this.handleTextChange} />
+          <input className="form-control" value={text} onChange={this.handleTextChange} />
         </div>
         <div className="body">
           { text === '' &&
@@ -122,9 +122,9 @@ export default class FilterMenu extends Component {
             </label>
           )}
         </div>
-        <div className="footer">
-          <button onClick={this.ok}>Ok</button>
-          <button onClick={this.cancel}>Cancel</button>
+        <div className="footer text-center">
+          <button className="btn btn-default" onClick={this.ok}>Ok</button>
+          <button className="btn btn-default" onClick={this.cancel}>Cancel</button>
         </div>
       </div>
     );
