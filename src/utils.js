@@ -1,12 +1,10 @@
-import { chain } from 'pivoter/lib/utils';
-
 export function pick(obj, props) {
   return props.reduce((acc, key) => ({ ...acc, [key]: obj[key] }), {});
 }
 
 export function getIn(obj, path) {
   if (path.length === 0) return obj;
-  const [head, ...tail ] = path;
+  const [head, ...tail] = path;
   return getIn(obj && obj[head], tail);
 }
 
@@ -17,11 +15,6 @@ export function last(ary) {
 export function range(start, end) {
   if (start >= end) return [];
   return [start].concat(range(start + 1, end));
-}
-
-export function columnTree({ total }, { dataPoints }) {
-  if (dataPoints) return columnTreeFromPoints(dataPoints);
-  return columnTreeFromReduced(total);
 }
 
 function toPoints(reduced) {
@@ -36,12 +29,9 @@ function toPoints(reduced) {
   ));
 }
 
-function columnTreeFromReduced(reduced) {
-  return columnTreeFromPoints(toPoints(reduced));
-}
-
 function singleHeight(point) {
   if (!point) return 0;
+  // eslint-disable-next-line no-use-before-define
   return 1 + height(point.subDataPoints);
 }
 
@@ -52,6 +42,7 @@ function height(points) {
 
 function singleWidth(point) {
   if (!point) return 0;
+  // eslint-disable-next-line no-use-before-define
   return Math.max(1, width(point.subDataPoints));
 }
 
@@ -86,6 +77,7 @@ function singleTree(point, heightLeft, i, parent) {
 
   return [[col]]
     .concat(range(0, diff).map(() => []))
+    // eslint-disable-next-line no-use-before-define
     .concat(columnTreeFromPoints(point.subDataPoints, nextHeight, col));
 }
 
@@ -103,6 +95,14 @@ function columnTreeFromPoints(points, heightLeft = height(points), parent = unde
   }, []);
 }
 
+function columnTreeFromReduced(reduced) {
+  return columnTreeFromPoints(toPoints(reduced));
+}
+
+export function columnTree({ total }, { dataPoints }) {
+  if (dataPoints) return columnTreeFromPoints(dataPoints);
+  return columnTreeFromReduced(total);
+}
 
 export function dataGetterFrom(columns) {
   return data => last(columns).map(col => ({ col, data: getIn(data, col.path) }));
