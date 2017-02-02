@@ -10,7 +10,6 @@ function range(start, end) {
 export default class GroupHeaders extends Component {
   static propTypes = {
     input: PropTypes.array.isRequired,
-    groups: PropTypes.array.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     config: PropTypes.object,
@@ -22,12 +21,12 @@ export default class GroupHeaders extends Component {
     super(props);
     this.state = {
       open: undefined,
-      filters: this.filtersFromGroups(props.groups),
+      filters: this.filtersFromGroups(props.config.groups),
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!shallowEquals(this.props.groups, nextProps.groups)) {
+    if (!shallowEquals(this.props.config.groups, nextProps.groups)) {
       this.setState({ filters: this.fitlersFromGroups(nextProps.groups) });
     }
   }
@@ -38,10 +37,10 @@ export default class GroupHeaders extends Component {
 
   filterInput() {
     const { filters } = this.state;
-    const { groups, input, onInputFilter } = this.props;
+    const { config, input, onInputFilter } = this.props;
 
     onInputFilter(input.filter(row =>
-      groups.every((g, i) =>
+      config.groups.every((g, i) =>
         filters[i](g.selector(row))
       )
     ));
@@ -77,8 +76,8 @@ export default class GroupHeaders extends Component {
     });
 
   updateGroupSorts = (i) => {
-    const { config, groups } = this.props;
-    const groupSorts = config.groupSorts;
+    const { config } = this.props;
+    const { groupSorts, groups } = config;
 
     if (!groupSorts) {
       this.props.onGroupSorts(range(0, groups.length).map(() => 'asc'));
@@ -88,9 +87,9 @@ export default class GroupHeaders extends Component {
   }
 
   render() {
-    const { input, width, height, groups, config } = this.props;
+    const { input, width, height, config } = this.props;
     const { open } = this.state;
-    const { groupSorts } = config;
+    const { groupSorts, groups } = config;
 
     return (
       <th colSpan={width} rowSpan={height} className="group-header header-controls">

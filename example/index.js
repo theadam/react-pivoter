@@ -5,6 +5,7 @@ import PivotTable from 'react-pivoter';
 import Pivoter from 'pivoter';
 
 import GroupHeaders from './group_headers.js';
+import Modal from './modal.js';
 import input from './data.json';
 
 const root = document.getElementById('app');
@@ -26,11 +27,14 @@ const dataPoints = [
   { title: 'Grand Total', value: x => x && x.total, subDataPoints },
 ];
 
-const allGroups = [
-  { name: 'Manufacturer', selector: x => x[2] },
-  { name: 'Category', selector: x => x[4] },
+const columns = [
   { name: 'Entity', selector: x => x[0] },
   { name: 'Product', selector: x => x[1] },
+  { name: 'Manufacturer', selector: x => x[2] },
+  { name: 'Class', selector: x => x[3] },
+  { name: 'Category', selector: x => x[4] },
+  { name: 'Quantity', selector: x => x[5] },
+  { name: 'Amount', selector: x => x[6] },
 ];
 
 function reducer(data, row) {
@@ -57,17 +61,6 @@ function reducer(data, row) {
   };
 }
 
-function renderCell(text, col, row) {
-  return (
-    <div
-      className="cell"
-      onDoubleClick={() => console.log(col.parent.selector(row.reduced).points)}
-    >
-      {text}
-    </div>
-  );
-}
-
 class MyPivotTable extends Component {
   constructor(props) {
     super(props);
@@ -75,8 +68,12 @@ class MyPivotTable extends Component {
       reducer,
       dataPoints,
       input,
-      groups: [allGroups[0], allGroups[1], allGroups[3]],
+      groups: [columns[2], columns[4], columns[1]],
     });
+  }
+
+  state = {
+    modalData: undefined,
   }
 
   componentWillMount() {
@@ -90,32 +87,58 @@ class MyPivotTable extends Component {
   handleInputFilter = newInput => this.pivoter.update({ input: newInput })
   handleGroupSorts = groupSorts => this.pivoter.update({ groupSorts })
   update = (data, config) => this.setState({ data, config });
+  closeModal = () => this.setState({ modalData: undefined });
 
-  render() {
-    const { config, data } = this.state;
+
+  renderCell = (text, col, row) => {
+    const parentReduced = col.parent.selector(row.reduced);
 
     return (
-      <PivotTable
-        data={data}
-        config={config}
-        groups={[allGroups[0], allGroups[1], allGroups[3]]}
-        input={input}
-        renderCell={renderCell}
-        renderTotalCell={renderCell}
-        className="table-striped pivot-hover pivot-table"
-        totalText="Grand Total"
-        renderGroupHeaders={(groups, width, height) =>
-          <GroupHeaders
-            width={width}
-            height={height}
-            groups={groups}
-            input={input}
-            config={config}
-            onGroupSorts={this.handleGroupSorts}
-            onInputFilter={this.handleInputFilter}
-          />
-        }
-      />
+      <div
+        className="cell"
+        onDoubleClick={() => this.setState({
+          modalData: parentReduced ? parentReduced.points : [],
+          col,
+          row,
+        })}
+      >
+        {text}
+      </div>
+    );
+  }
+
+  render() {
+    const { config, data, modalData, row, col } = this.state;
+
+    return (
+      <div>
+        <PivotTable
+          data={data}
+          config={config}
+          renderCell={this.renderCell}
+          renderTotalCell={this.renderCell}
+          className="table-striped pivot-hover pivot-table"
+          totalText="Grand Total"
+          renderGroupHeaders={(groups, width, height) =>
+            <GroupHeaders
+              width={width}
+              height={height}
+              groups={groups}
+              input={input}
+              config={config}
+              onGroupSorts={this.handleGroupSorts}
+              onInputFilter={this.handleInputFilter}
+            />
+          }
+        />
+        <Modal
+          data={modalData}
+          columns={columns}
+          onRequestClose={this.closeModal}
+          row={row}
+          col={col}
+        />
+      </div>
     );
   }
 
