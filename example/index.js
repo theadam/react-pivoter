@@ -15,18 +15,6 @@ function handleTooHigh(x) {
   return <span className="too-high">{x}</span>;
 }
 
-const subDataPoints = [
-  { title: 'Quantity', value: x => x && x.quantity, formatter: x => handleTooHigh(x) },
-  { title: 'Amount', value: x => (x && (x.sum / x.count)) || 0, formatter: x => Number(x).toFixed(0) },
-];
-
-const dataPoints = [
-  { title: 'Economy', value: x => x && x.Economy, subDataPoints },
-  { title: 'Regular', value: x => x && x.Regular, subDataPoints },
-  { title: 'Deluxe', value: x => x && x.Deluxe, subDataPoints },
-  { title: 'Grand Total', value: x => x && x.total, subDataPoints },
-];
-
 const columns = [
   { name: 'Entity', selector: x => x[0] },
   { name: 'Product', selector: x => x[1] },
@@ -66,7 +54,7 @@ class MyPivotTable extends Component {
     super(props);
     this.pivoter = Pivoter({
       reducer,
-      dataPoints,
+      dataPoints: this.dataPoints,
       input,
       groups: [columns[2], columns[4], columns[1]],
     });
@@ -84,11 +72,52 @@ class MyPivotTable extends Component {
     this.pivoter.unsubscribe(this.update);
   }
 
+  handleDataSort = sortBy => () => {
+    const { config } = this.state;
+    const sorted = config.dataSortBy === sortBy;
+    const dir = sorted && config.dataSortDir === 'asc' ? 'desc' : 'asc';
+    this.pivoter.update({ dataSortBy: sortBy, dataSortDir: dir });
+  }
+
+  sortedHeader = (text, col) => {
+    const { config } = this.state;
+    const sortBy = col.path.join('.');
+    const sortClass = config.dataSortBy === sortBy ?
+      `sort-${config.dataSortDir}` :
+      '';
+
+    return (
+      <span
+        className={`sorter ${sortClass}`}
+        onClick={this.handleDataSort(sortBy)}
+      >
+        {text}
+      </span>
+    );
+  }
+
+  subDataPoints = [
+    { title: 'Quantity', value: x => x && x.quantity, formatter: x => handleTooHigh(x) },
+    { title: 'Amount', value: x => (x && (x.sum / x.count)) || 0, formatter: x => Number(x).toFixed(0) },
+  ];
+
+  dataPoints = [
+    {
+      title: 'Economy',
+      value: x => x && x.Economy,
+      subDataPoints: this.subDataPoints.map(p => (
+        { ...p, headerFormatter: this.sortedHeader }
+      )),
+    },
+    { title: 'Regular', value: x => x && x.Regular, subDataPoints: this.subDataPoints },
+    { title: 'Deluxe', value: x => x && x.Deluxe, subDataPoints: this.subDataPoints },
+    { title: 'Grand Total', value: x => x && x.total, subDataPoints: this.subDataPoints },
+  ];
+
   handleInputFilter = newInput => this.pivoter.update({ input: newInput })
   handleGroupSorts = groupSorts => this.pivoter.update({ groupSorts })
   update = (data, config) => this.setState({ data, config });
   closeModal = () => this.setState({ modalData: undefined });
-
 
   renderCell = (text, col, row) => {
     const parentReduced = col.parent.selector(row.reduced);
