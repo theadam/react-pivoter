@@ -31,41 +31,83 @@
       vertical-align: middle;
     }
 
-    .pivot-table > thead > tr > th:not(.group-header) {
+    .pivot-table > thead > tr > th {
       text-align: center;
     }
 
-    .pivot-table > tbody > tr > td.data {
+    .pivot-table > tbody > tr > td.data,
+    .pivot-table > tfoot > tr > td.total-data,
+    .pivot-table > tfoot > tr > td.total-group {
       text-align: right;
+    }
+
+    .pivot-table > tbody > tr > .data,
+    .pivot-table > tfoot > tr > .total-data,
+    .pivot-table > thead > tr > .leaf {
+      border-left: 1px solid #eee;
+    }
+
+    .pivot-table > tbody > tr {
+      border-bottom: 1px solid #eee;
     }
 
     .pivot-table > tbody > tr > .group-start,
     .pivot-table > thead > tr > .group-start.leaf,
     .pivot-table > thead > tr > .parent,
-    .pivot-table > tbody > tr {
-      border-left: 2px solid #ddd;
+    .pivot-table > tbody > tr,
+    .pivot-table > tfoot > tr > .group-start,
+    .pivot-table > tfoot > tr {
+      border-left: 1px solid #ccc;
     }
 
-    .pivot-table > thead > tr:first-child > th:not(.group-header) {
-      border-top: 2px solid #ddd;
+    .pivot-table > thead > tr:first-child > th:not(.group-header),
+    .pivot-table > tfoot > tr > td {
+      border-top: 1px solid #ccc;
     }
 
     .pivot-table {
-      border-right: 2px solid #ddd;
-      border-bottom: 2px solid #ddd;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
     }
 
     .pivot-table > thead > tr {
-      border-bottom: 2px solid #ddd;
+      border-bottom: 1px solid #ccc;
     }
 
     .pivot-table .group + .group-start {
-      border-left: 2px solid #ddd;
+      border-left: 1px solid #ccc;
     }
 
     .pivot-table.pivot-hover > tbody > tr:hover > td:not(.before-group) {
-      background-color: #f5f5f5;
+      background-color: #e5e5e5;
     }
+
+    .pivot-table > thead > tr > th,
+    .pivot-table > tbody > tr > td,
+    .pivot-table > tfoot > tr > td {
+      padding: 8px;
+    }
+
+    .pivot-table > thead > tr > th,
+    .pivot-table > tbody > tr > td,
+    .pivot-table > tfoot > tr > td {
+      padding: 8px;
+    }
+
+    .pivot-table > tfoot > tr > td {
+      font-weight: bold;
+    }
+
+    /* custom */
+    .pivot-table > tbody > tr > td.data,
+    .pivot-table > tfoot > tr > td.total-data {
+      padding: 0px;
+    }
+
+    .cell {
+      padding: 8px;
+    }
+
 
   </style>
 </head>

@@ -4,6 +4,7 @@ import Pivoter from 'pivoter';
 import { subPath, pick, columnTree, dataGetterFrom, isOpen } from './utils';
 import PivotHeader from './pivot_header';
 import PivotBody from './pivot_body';
+import PivotTotal from './pivot_total';
 
 const pivoterPropTypes = {
   reducer: PropTypes.func.isRequired,
@@ -28,8 +29,11 @@ export default class PivotTable extends Component {
     renderHeader: PropTypes.func,
     renderCell: PropTypes.func,
     renderGroup: PropTypes.func,
+    renderTotalCell: PropTypes.func,
+    renderTotalGroup: PropTypes.func,
     renderGroupHeader: PropTypes.func,
     className: PropTypes.string,
+    totalText: PropTypes.string,
   }
 
   constructor(props) {
@@ -68,7 +72,8 @@ export default class PivotTable extends Component {
 
   render() {
     const { data, config, opens } = this.state;
-    const { renderHeader, renderCell, renderGroup, renderGroupHeader } = this.props;
+    const { renderHeader, renderCell, renderGroup, renderGroupHeader,
+      totalText, renderTotalGroup, renderTotalCell } = this.props;
     const { groups } = config;
     const columns = columnTree(data, config);
     const dataGetter = dataGetterFrom(columns);
@@ -92,6 +97,14 @@ export default class PivotTable extends Component {
           maxOpen={maxOpen}
           onToggleOpen={this.handleOpen}
           groups={groups}
+        />
+        <PivotTotal
+          totalText={totalText}
+          total={data.total}
+          dataGetter={dataGetter}
+          renderTotalGroup={renderTotalGroup}
+          renderTotalCell={renderTotalCell}
+          maxOpen={maxOpen}
         />
       </table>
     );

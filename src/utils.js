@@ -60,13 +60,19 @@ function width(points) {
   return points.reduce((acc, v) => acc + singleWidth(v), 0);
 }
 
-function singleTree(point, heightLeft, i, basepath) {
+function singleTree(point, heightLeft, i, parent) {
   const pointHeight = singleHeight(point);
   const diff = pointHeight - heightLeft;
   const nextHeight = pointHeight - 1;
+  const basepath = (parent && parent.path) || [];
+  const baseselector = (parent && parent.selector) || (v => v);
   const newPath = basepath.concat(point.title);
+  const value = point.value || (v => v);
+  const selector = v => value(baseselector(v));
 
-  return [[{
+  const col = {
+    selector,
+    parent,
     text: point.title,
     colSpan: singleWidth(point),
     rowSpan: diff + 1,
@@ -76,9 +82,11 @@ function singleTree(point, heightLeft, i, basepath) {
     path: newPath,
     format: point.formatter || (x => x),
     headerFormat: point.headerFormatter || (x => x),
-  }]]
+  };
+
+  return [[col]]
     .concat(range(0, diff).map(() => []))
-    .concat(columnTreeFromPoints(point.subDataPoints, nextHeight, newPath));
+    .concat(columnTreeFromPoints(point.subDataPoints, nextHeight, col));
 }
 
 function zipTree(left, right) {
@@ -87,10 +95,10 @@ function zipTree(left, right) {
   );
 }
 
-function columnTreeFromPoints(points, heightLeft = height(points), basepath = []) {
+function columnTreeFromPoints(points, heightLeft = height(points), parent = undefined) {
   if (!points) return [];
   return points.reduce((acc, v, i) => {
-    const tree = singleTree(v, heightLeft, i, basepath);
+    const tree = singleTree(v, heightLeft, i, parent);
     return zipTree(acc, tree);
   }, []);
 }

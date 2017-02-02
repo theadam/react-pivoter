@@ -39,22 +39,25 @@ function reducer(data, row) {
       count: (dataTotal.count || 0) + 1,
       sum: (dataTotal.sum || 0) + value,
       quantity: (dataTotal.quantity || 0) + quantity,
+      points: (dataTotal.points || []).concat([row]),
     },
     [type]: {
       count: (dataType.count || 0) + 1,
       sum: (dataType.sum || 0) + value,
       quantity: (dataType.quantity || 0) + quantity,
+      points: (dataType.points || []).concat([row]),
     },
   };
 }
 
 function renderCell(text, col, row) {
   return (
-    <span
-      onDoubleClick={() => console.log(row.points)}
+    <div
+      className="cell"
+      onDoubleClick={() => console.log(col.parent.selector(row.reduced).points)}
     >
       {text}
-    </span>
+    </div>
   );
 }
 
@@ -65,7 +68,9 @@ render(
     dataPoints={dataPoints}
     input={input}
     renderCell={renderCell}
-    className="table pivot-hover pivot-table"
+    renderTotalCell={renderCell}
+    className="table-striped pivot-hover pivot-table"
+    totalText="Grand Total"
   />,
   root
 );
