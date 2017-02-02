@@ -14,6 +14,12 @@
       vertical-align: middle;
     }
 
+    .pivot-table .after-group,
+    .pivot-table .group.open,
+    .pivot-table .group.closed {
+      cursor: pointer;
+    }
+
     .pivot-table .group.closed:before {
       content: "▶";
       margin-right: 5px;
@@ -102,13 +108,15 @@
       color: red;
     }
 
-    .pivot-table > tbody > tr > td.data,
-    .pivot-table > tfoot > tr > td.total-data {
-      padding: 0px;
-    }
-
     .cell {
       padding: 8px;
+      margin: -8px;
+    }
+
+    .leaf .sorter {
+      padding: 8px;
+      margin: -8px;
+      cursor: pointer;
     }
 
     .group-header {
@@ -143,6 +151,9 @@
       margin-left: 10px;
       border-radius: 4px;
       padding: 2px;
+    }
+
+    .group-header i:hover {
       background-color: #ccc;
     }
 
