@@ -21,15 +21,17 @@
     }
 
     .pivot-table .group.closed:before {
-      content: "▶";
+      /* right */
+      content: "\f0da";
+      font-family: FontAwesome;
       margin-right: 5px;
-      font-size: 0.55em;
     }
 
     .pivot-table .group.open:before {
-      content: "▼";
+      /* down */
+      content: "\f0d7";
+      font-family: FontAwesome;
       margin-right: 5px;
-      font-size: 0.65em;
     }
 
     .pivot-table > thead > tr > th {
@@ -127,34 +129,25 @@
       text-align: left;
     }
 
-    .group-header button {
+    .group-header .btn-group {
       margin-right: 10px;
     }
 
     .sorter:after {
-      content: "▲";
+      content: "\f0d8";
+      font-family: FontAwesome;
       margin-left: 5px;
-      font-size: 0.65em;
       color: #ccc;
     }
 
     .sorter.sort-desc:after {
-      content: "▼";
+      content: "\f0d7";
+      font-family: FontAwesome;
       color: #000;
     }
 
     .sorter.sort-asc:after {
       color: #000;
-    }
-
-    .group-header i {
-      margin-left: 10px;
-      border-radius: 4px;
-      padding: 2px;
-    }
-
-    .group-header i:hover {
-      background-color: #ccc;
     }
 
     .group-header > span {

@@ -102,17 +102,24 @@ export default class GroupHeaders extends Component {
 
           return (
             <span key={group.name}>
-              <button
-                className="btn btn-default"
-                onClick={() => this.updateGroupSorts(i)}
-              >
-                <span
-                  className={`sorter ${sort ? `sort-${sort}` : ''}`}
+              <div className="btn-group">
+                <button
+                  className="btn btn-default"
+                  onClick={() => this.updateGroupSorts(i)}
                 >
-                  {group.name}
-                </span>
-                <i className="fa fa-filter" onClick={this.handleOpen(i)} />
-              </button>
+                  <span
+                    className={`sorter ${sort ? `sort-${sort}` : ''}`}
+                  >
+                    {group.name}
+                  </span>
+                </button>
+                <button
+                  className="btn btn-default"
+                  onClick={this.handleOpen(i)}
+                >
+                  <i className="fa fa-filter" />
+                </button>
+              </div>
               <FilterMenu
                 show={filterOpen}
                 onRequestClose={this.close}
