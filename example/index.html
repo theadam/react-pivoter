@@ -21,16 +21,14 @@
     }
 
     .pivot-table .group.closed:before {
-      /* right */
-      content: "\f0da";
-      font-family: FontAwesome;
+      content: "+";
+      font-weight: bold;
       margin-right: 5px;
     }
 
     .pivot-table .group.open:before {
-      /* down */
-      content: "\f0d7";
-      font-family: FontAwesome;
+      content: "-";
+      font-weight: bold;
       margin-right: 5px;
     }
 
@@ -134,15 +132,14 @@
     }
 
     .sorter:after {
-      content: "\f0d8";
-      font-family: FontAwesome;
+      content: "▲";
       margin-left: 5px;
+      font-size: 0.65em;
       color: #ccc;
     }
 
     .sorter.sort-desc:after {
-      content: "\f0d7";
-      font-family: FontAwesome;
+      content: "▼";
       color: #000;
     }
 
