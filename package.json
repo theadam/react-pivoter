@@ -45,6 +45,7 @@
     "eslint-plugin-react": "^6.9.0",
     "json-loader": "^0.5.4",
     "react-dom": "^15.4.2",
+    "react-onclickoutside": "^5.8.4",
     "rimraf": "^2.5.4",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2"

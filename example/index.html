@@ -8,7 +8,6 @@
   <style>
     #app {
       margin: 10px;
-      overflow: scroll;
     }
 
     .pivot-table .group {
@@ -99,6 +98,10 @@
     }
 
     /* custom */
+    tbody .too-high {
+      color: red;
+    }
+
     .pivot-table > tbody > tr > td.data,
     .pivot-table > tfoot > tr > td.total-data {
       padding: 0px;
@@ -108,6 +111,75 @@
       padding: 8px;
     }
 
+    .group-header.header-controls {
+      text-align: left;
+    }
+
+    .group-header button {
+      margin-right: 10px;
+    }
+
+    .group-header .sorter:after {
+      content: "▲";
+      margin-left: 5px;
+      font-size: 0.65em;
+      color: #ccc;
+    }
+
+    .group-header .sorter.sort-desc:after {
+      content: "▼";
+      color: #000;
+    }
+
+    .group-header .sorter.sort-asc:after {
+      color: #000;
+    }
+
+    .group-header i {
+      margin-left: 10px;
+      border-radius: 4px;
+      padding: 2px;
+      background-color: #ccc;
+    }
+
+    .group-header > span {
+      position: relative;
+      display: inline-block;
+    }
+
+    .filter-menu {
+      position: absolute;
+      top: 0;
+      padding: 5px;
+      background-color: white;
+      border: 1px solid #aaa;
+      z-index: 100;
+    }
+
+    .filter-menu.hide {
+      visibility: hidden;
+    }
+
+    .filter-menu .header input {
+      width: 100%;
+    }
+
+    .filter-menu .body {
+      margin-top: 3px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #aaa;
+      max-height: 200px;
+      overflow-y: scroll;
+    }
+
+    .filter-menu .body input {
+      margin-right: 5px;
+    }
+
+    .filter-menu .body label {
+      display: block;
+      white-space: nowrap;
+    }
 
   </style>
 </head>

@@ -1,14 +1,21 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
-import React from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
-
 import PivotTable from 'react-pivoter';
+import Pivoter from 'pivoter';
+
+import GroupHeaders from './group_headers.js';
 import input from './data.json';
 
 const root = document.getElementById('app');
 
+function handleTooHigh(x) {
+  if (x < 100) return x;
+  return <span className="too-high">{x}</span>;
+}
+
 const subDataPoints = [
-  { title: 'Quantity', value: x => x && x.quantity, formatter: x => x },
+  { title: 'Quantity', value: x => x && x.quantity, formatter: x => handleTooHigh(x) },
   { title: 'Amount', value: x => (x && (x.sum / x.count)) || 0, formatter: x => Number(x).toFixed(0) },
 ];
 
@@ -61,16 +68,60 @@ function renderCell(text, col, row) {
   );
 }
 
-render(
-  <PivotTable
-    reducer={reducer}
-    groups={[allGroups[0], allGroups[1], allGroups[3]]}
-    dataPoints={dataPoints}
-    input={input}
-    renderCell={renderCell}
-    renderTotalCell={renderCell}
-    className="table-striped pivot-hover pivot-table"
-    totalText="Grand Total"
-  />,
-  root
-);
+class MyPivotTable extends Component {
+  constructor(props) {
+    super(props);
+    this.pivoter = Pivoter({
+      reducer,
+      dataPoints,
+      input,
+      groups: [allGroups[0], allGroups[1], allGroups[3]],
+    });
+  }
+
+  componentWillMount() {
+    this.pivoter.subscribe(this.update);
+  }
+
+  componentWillUnmount() {
+    this.pivoter.unsubscribe(this.update);
+  }
+
+  handleInputFilter = newInput => this.pivoter.update({ input: newInput })
+  handleGroupSorts = groupSorts => this.pivoter.update({ groupSorts })
+  update = (data, config) => this.setState({ data, config });
+
+  render() {
+    const { config, data } = this.state;
+
+    return (
+      <PivotTable
+        data={data}
+        config={config}
+        groups={[allGroups[0], allGroups[1], allGroups[3]]}
+        input={input}
+        renderCell={renderCell}
+        renderTotalCell={renderCell}
+        className="table-striped pivot-hover pivot-table"
+        totalText="Grand Total"
+        renderGroupHeaders={(groups, width, height) =>
+          <GroupHeaders
+            width={width}
+            height={height}
+            groups={groups}
+            input={input}
+            config={config}
+            onGroupSorts={this.handleGroupSorts}
+            onInputFilter={this.handleInputFilter}
+          />
+        }
+      />
+    );
+  }
+
+
+}
+
+
+render(<MyPivotTable />, root);
+

@@ -47,11 +47,12 @@ export default class PivotBody extends Component {
     }
   }
 
-  group(row) {
-    const { groups } = this.props;
+  renderGroup(row) {
+    const { groups, renderGroup } = this.props;
     const group = groups[row.level];
+    const text = (group.formatter || (x => x))(last(row.path, row));
 
-    return (group.formatter || (x => x))(last(row.path, row));
+    return renderGroup(text, group, row);
   }
 
 
@@ -69,7 +70,7 @@ export default class PivotBody extends Component {
               onClick={this.handleGroupClick(row)}
               className={this.getGroupClassName(row)}
             >
-              { renderGroup(this.group(row), row) }
+              { this.renderGroup(row) }
             </td>
             { range(0, maxOpen - row.level - 1).map((v, i) =>
               <td

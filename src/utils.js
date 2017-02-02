@@ -1,7 +1,3 @@
-export function pick(obj, props) {
-  return props.reduce((acc, key) => ({ ...acc, [key]: obj[key] }), {});
-}
-
 export function getIn(obj, path) {
   if (path.length === 0) return obj;
   const [head, ...tail] = path;

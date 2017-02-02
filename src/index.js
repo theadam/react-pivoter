@@ -1,37 +1,20 @@
 import React, { Component, PropTypes } from 'react';
-import Pivoter from 'pivoter';
 
-import { subPath, pick, columnTree, dataGetterFrom, isOpen } from './utils';
+import { subPath, columnTree, dataGetterFrom, isOpen } from './utils';
 import PivotHeader from './pivot_header';
 import PivotBody from './pivot_body';
 import PivotTotal from './pivot_total';
 
-const pivoterPropTypes = {
-  reducer: PropTypes.func.isRequired,
-  input: PropTypes.array.isRequired,
-  groups: PropTypes.array.isRequired,
-  flattener: PropTypes.func,
-  initialValue: PropTypes.any,
-  dataPoints: PropTypes.array,
-  groupSorts: PropTypes.array,
-  dataSortBy: PropTypes.oneOf([PropTypes.string, PropTypes.array, PropTypes.func]),
-  dataSortDir: PropTypes.string,
-  dataSortsWith: PropTypes.func,
-};
-
-const pivoterKeys = Object.keys(pivoterPropTypes);
-const pickForPivot = obj => pick(obj, pivoterKeys);
-
-
 export default class PivotTable extends Component {
   static propTypes = {
-    ...pivoterPropTypes,
+    data: PropTypes.object.isRequired,
+    config: PropTypes.object.isRequired,
     renderHeader: PropTypes.func,
     renderCell: PropTypes.func,
     renderGroup: PropTypes.func,
     renderTotalCell: PropTypes.func,
     renderTotalGroup: PropTypes.func,
-    renderGroupHeader: PropTypes.func,
+    renderGroupHeaders: PropTypes.func,
     className: PropTypes.string,
     totalText: PropTypes.string,
   }
@@ -40,23 +23,8 @@ export default class PivotTable extends Component {
     super(props);
 
     this.state = {
-      pivoter: Pivoter(pickForPivot(props)),
       opens: [],
     };
-  }
-
-  componentWillMount() {
-    this.state.pivoter.subscribe(this.update);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      pivoter: this.state.pivoter.update(pickForPivot(nextProps)),
-    });
-  }
-
-  componentWillUnmount() {
-    this.state.pivoter.unsubscribe(this.update);
   }
 
   handleOpen = (path) => {
@@ -67,13 +35,12 @@ export default class PivotTable extends Component {
     }
   }
 
-  update = (data, config) => this.setState({ data, config });
   maxOpen = () => this.state.opens.reduce((acc, v) => Math.max(acc, v.length + 1), 1);
 
   render() {
-    const { data, config, opens } = this.state;
-    const { renderHeader, renderCell, renderGroup, renderGroupHeader,
-      totalText, renderTotalGroup, renderTotalCell } = this.props;
+    const { opens } = this.state;
+    const { renderHeader, renderCell, renderGroup, renderGroupHeaders,
+      totalText, renderTotalGroup, renderTotalCell, config, data } = this.props;
     const { groups } = config;
     const columns = columnTree(data, config);
     const dataGetter = dataGetterFrom(columns);
@@ -84,7 +51,7 @@ export default class PivotTable extends Component {
         <PivotHeader
           columnTree={columns}
           renderHeader={renderHeader}
-          renderGroupHeader={renderGroupHeader}
+          renderGroupHeaders={renderGroupHeaders}
           maxOpen={maxOpen}
           groups={groups}
         />
