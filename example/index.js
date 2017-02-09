@@ -4,8 +4,9 @@ import { render } from 'react-dom';
 import PivotTable from 'react-pivoter';
 import Pivoter from 'pivoter';
 
-import GroupHeaders from './group_headers.js';
-import Modal from './modal.js';
+import GroupHeaders from './group_headers';
+import CellRenderer from './cell_renderer';
+import Modal from './modal';
 import input from './data.json';
 
 const root = document.getElementById('app');
@@ -118,23 +119,25 @@ class MyPivotTable extends Component {
   handleGroupSorts = groupSorts => this.pivoter.update({ groupSorts })
   update = (data, config) => this.setState({ data, config });
   closeModal = () => this.setState({ modalData: undefined });
-
-  renderCell = (text, col, row) => {
+  openModal = (col, row) => {
+    document.body.scrollLeft = 0;
+    document.body.scrollTop = 0;
     const parentReduced = col.parent.selector(row.reduced);
-
-    return (
-      <div
-        className="cell"
-        onDoubleClick={() => this.setState({
-          modalData: parentReduced ? parentReduced.points : [],
-          col,
-          row,
-        })}
-      >
-        {text}
-      </div>
-    );
+    this.setState({
+      modalData: parentReduced ? parentReduced.points : [],
+      col,
+      row,
+    });
   }
+
+  renderCell = (text, col, row) => (
+    <CellRenderer
+      className="cell"
+      onDoubleClick={() => this.openModal(col, row)}
+    >
+      {text}
+    </CellRenderer>
+  )
 
   render() {
     const { config, data, modalData, row, col } = this.state;
@@ -170,8 +173,6 @@ class MyPivotTable extends Component {
       </div>
     );
   }
-
-
 }
 
 

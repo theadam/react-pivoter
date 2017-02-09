@@ -15,7 +15,7 @@ export default class Modal extends Component {
   }
 
   render() {
-    const { data, columns, col, row } = this.props;
+    const { data, columns, col, row, onRequestClose } = this.props;
     if (!data) return false;
 
     return (
@@ -24,6 +24,9 @@ export default class Modal extends Component {
           <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
+                <button type="button" className="close" onClick={onRequestClose}>
+                  x
+                </button>
                 <h3>
                   {row.path ? row.path.join(' - ') : 'Total'}
                 </h3>

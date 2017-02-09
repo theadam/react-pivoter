@@ -8,7 +8,7 @@ export default class PivotBody extends Component {
     flattened: PropTypes.array.isRequired,
     renderCell: PropTypes.func,
     renderGroup: PropTypes.func,
-    opens: PropTypes.array.isRequired,
+    opens: PropTypes.object.isRequired,
     maxOpen: PropTypes.number.isRequired,
     onToggleOpen: PropTypes.func.isRequired,
     groups: PropTypes.array.isRequired,
@@ -57,7 +57,7 @@ export default class PivotBody extends Component {
 
 
   render() {
-    const { flattened, dataGetter, renderCell, maxOpen, renderGroup } = this.props;
+    const { flattened, dataGetter, renderCell, maxOpen } = this.props;
 
     return (
       <tbody>

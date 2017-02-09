@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>React-Pivoter</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -104,7 +105,7 @@
     }
 
     /* custom */
-    tbody .too-high {
+    tbody .too-high, tfoot .too-high {
       color: red;
     }
 
@@ -127,8 +128,17 @@
       text-align: left;
     }
 
+    .group-header > div {
+      display: flex;
+    }
+
+    .group-header > div > span > div {
+      position: relative;
+    }
+
     .group-header .btn-group {
-      margin-right: 10px;
+      margin-right: 3px;
+      display: flex;
     }
 
     .sorter:after {
@@ -147,9 +157,9 @@
       color: #000;
     }
 
-    .group-header > span {
-      position: relative;
-      display: inline-block;
+    .group-header .btn-group > .btn {
+      padding: 3px 3px;
+      font-size: 12px;
     }
 
     .filter-menu {
@@ -184,6 +194,10 @@
     .filter-menu .body label {
       display: block;
       white-space: nowrap;
+    }
+
+    .modal {
+      max-width: 100vw;
     }
 
     .modal-body {

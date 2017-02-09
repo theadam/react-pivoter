@@ -93,42 +93,46 @@ export default class GroupHeaders extends Component {
 
     return (
       <th colSpan={width} rowSpan={height} className="group-header header-controls">
-        {groups.map((group, i) => {
-          const sort = (groupSorts || [])[i];
-          const filterOpen = open === i;
-          const values = Object.keys(
-            input.map(group.selector).reduce((acc, v) => ({ ...acc, [v]: true }), {})
-          ).sort();
+        <div>
+          {groups.map((group, i) => {
+            const sort = (groupSorts || [])[i];
+            const filterOpen = open === i;
+            const values = Object.keys(
+              input.map(group.selector).reduce((acc, v) => ({ ...acc, [v]: true }), {})
+            ).sort();
 
-          return (
-            <span key={group.name}>
-              <div className="btn-group">
-                <button
-                  className="btn btn-default"
-                  onClick={() => this.updateGroupSorts(i)}
-                >
-                  <span
-                    className={`sorter ${sort ? `sort-${sort}` : ''}`}
-                  >
-                    {group.name}
-                  </span>
-                </button>
-                <button
-                  className="btn btn-default"
-                  onClick={this.handleOpen(i)}
-                >
-                  <i className="fa fa-filter" />
-                </button>
-              </div>
-              <FilterMenu
-                show={filterOpen}
-                onRequestClose={this.close}
-                data={values}
-                onFilter={this.handleFilter(i)}
-              />
-            </span>
-          );
-        })}
+            return (
+              <span key={group.name}>
+                <div>
+                  <div className="btn-group">
+                    <button
+                      className="btn btn-default"
+                      onClick={() => this.updateGroupSorts(i)}
+                    >
+                      <span
+                        className={`sorter ${sort ? `sort-${sort}` : ''}`}
+                      >
+                        {group.name}
+                      </span>
+                    </button>
+                    <button
+                      className="btn btn-default"
+                      onClick={this.handleOpen(i)}
+                    >
+                      <i className="fa fa-filter" />
+                    </button>
+                  </div>
+                  <FilterMenu
+                    show={filterOpen}
+                    onRequestClose={this.close}
+                    data={values}
+                    onFilter={this.handleFilter(i)}
+                  />
+                </div>
+              </span>
+            );
+          })}
+        </div>
       </th>
     );
   }

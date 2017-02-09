@@ -33,7 +33,7 @@ function singleHeight(point) {
 
 function height(points) {
   if (!points) return 0;
-  return points.reduce((acc, v) => Math.max(acc, singleHeight(v)), 0);
+  return Math.max(0, ...points.map(singleHeight));
 }
 
 function singleWidth(point) {
@@ -108,11 +108,40 @@ export function subPath(a, b) {
   return a.every((v, i) => b[i] === v);
 }
 
-function samePath(a, b) {
-  return a.length === b.length &&
-    subPath(a, b);
+export function isOpen(path, opens) {
+  if (opens === undefined) return false;
+  if (path.length === 0) return true;
+  const [head, ...tail] = path;
+  return isOpen(tail, opens[head]);
 }
 
-export function isOpen(path, opens) {
-  return opens.some(open => samePath(path, open));
+function close(opens, path) {
+  if (path.length === 1) return { ...opens, [path[0]]: undefined };
+  const [head, ...tail] = path;
+  return {
+    ...opens,
+    [head]: close(opens[head], tail),
+  };
 }
+
+function open(opens, path) {
+  if (path.length === 0) return {};
+  const [head, ...tail] = path;
+  return {
+    ...opens,
+    [head]: open(opens[head], tail),
+  };
+}
+
+export function updateOpens(opens, path) {
+  if (isOpen(path, opens)) {
+    return close(opens, path);
+  }
+  return open(opens, path);
+}
+
+export function maxOpen(opens) {
+  if (!opens) return 0;
+  return Math.max(0, ...Object.keys(opens).map(head => maxOpen(opens[head]))) + 1;
+}
+
