@@ -7,6 +7,7 @@ export default class CellRenderer extends Component {
   }
 
   handleClick = (e) => {
+    e.preventDefault();
     if (this.clicked) {
       clearTimeout(this.toid);
       this.clicked = false;
