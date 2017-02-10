@@ -137,8 +137,23 @@
     }
 
     .group-header .btn-group {
-      margin-right: 3px;
+      margin-right: 10px;
       display: flex;
+    }
+
+    .group-header .btn-group > .btn {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    @media(max-width: 768px) {
+      .group-header .btn-group > .btn {
+        padding: 3px 3px;
+      }
+
+      .group-header .btn-group {
+        margin-right: 3px;
+      }
     }
 
     .sorter:after {
@@ -155,11 +170,6 @@
 
     .sorter.sort-asc:after {
       color: #000;
-    }
-
-    .group-header .btn-group > .btn {
-      padding: 3px 3px;
-      font-size: 12px;
     }
 
     .filter-menu {
