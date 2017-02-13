@@ -1,8 +1,8 @@
 {
   "name": "react-pivoter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Display pivot tables in react using pivoter",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha",
     "babel": "babel --out-dir lib src",
