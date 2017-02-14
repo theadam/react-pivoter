@@ -97,7 +97,7 @@ function columnTreeFromReduced(reduced) {
 
 export function columnTree({ total }, { dataPoints }) {
   if (dataPoints) return columnTreeFromPoints(dataPoints);
-  return columnTreeFromReduced(total);
+  return columnTreeFromReduced(total.reduced);
 }
 
 export function dataGetterFrom(columns) {
