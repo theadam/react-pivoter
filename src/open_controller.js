@@ -19,7 +19,7 @@ export default class OpenController extends Component {
     totalText: PropTypes.string,
     columnTree: PropTypes.array.isRequired,
     dataGetter: PropTypes.func.isRequired,
-    afterGroups: PropTypes.bool,
+    spanGroups: PropTypes.bool,
   }
 
   constructor(props) {
@@ -38,7 +38,7 @@ export default class OpenController extends Component {
     const { opens } = this.state;
     const { renderHeader, renderCell, renderGroup, renderGroupHeaders,
       totalText, renderTotalGroup, renderTotalCell, config, data,
-      columnTree, dataGetter, afterGroups,
+      columnTree, dataGetter, spanGroups,
     } = this.props;
     const { groups } = config;
     const openMax = maxOpen(opens);
@@ -53,7 +53,7 @@ export default class OpenController extends Component {
           groups={groups}
         />
         <PivotBody
-          afterGroups={afterGroups}
+          spanGroups={spanGroups}
           flattened={data.flattened}
           dataGetter={dataGetter}
           renderCell={renderCell}

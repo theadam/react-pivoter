@@ -6,7 +6,7 @@ import OpenController from './open_controller';
 export default function PivotTable(props) {
   const { renderHeader, renderCell, renderGroup, renderGroupHeaders,
     totalText, renderTotalGroup, renderTotalCell, config, data,
-    className, afterGroups,
+    className, spanGroups,
   } = props;
   const columns = columnTree(data, config);
   const dataGetter = dataGetterFrom(columns);
@@ -25,7 +25,7 @@ export default function PivotTable(props) {
       totalText={totalText}
       columnTree={columns}
       dataGetter={dataGetter}
-      afterGroups={afterGroups}
+      spanGroups={spanGroups}
     />
   );
 }
@@ -41,6 +41,6 @@ PivotTable.propTypes = {
   renderGroupHeaders: PropTypes.func,
   className: PropTypes.string,
   totalText: PropTypes.string,
-  afterGroups: PropTypes.bool,
+  spanGroups: PropTypes.bool,
 };
 

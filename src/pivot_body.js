@@ -12,13 +12,13 @@ export default class PivotBody extends Component {
     maxOpen: PropTypes.number.isRequired,
     onToggleOpen: PropTypes.func.isRequired,
     groups: PropTypes.array.isRequired,
-    afterGroups: PropTypes.bool.isRequired,
+    spanGroups: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
     renderCell: data => data,
     renderGroup: group => group,
-    afterGroups: true,
+    spanGroups: false,
   }
 
   getCellClassName(col) {
@@ -59,8 +59,8 @@ export default class PivotBody extends Component {
 
 
   render() {
-    const { flattened, dataGetter, renderCell, afterGroups, maxOpen } = this.props;
-    const colSpan = row => (afterGroups ? 1 : maxOpen - row.level);
+    const { flattened, dataGetter, renderCell, spanGroups, maxOpen } = this.props;
+    const colSpan = row => (spanGroups ? maxOpen - row.level : 1);
 
     return (
       <tbody>
@@ -76,7 +76,7 @@ export default class PivotBody extends Component {
             >
               { this.renderGroup(row) }
             </td>
-            { afterGroups && range(0, maxOpen - row.level - 1).map((v, i) =>
+            { !spanGroups && range(0, maxOpen - row.level - 1).map((v, i) =>
               <td
                 onClick={this.handleGroupClick(row)}
                 className="after-group" key={i}
